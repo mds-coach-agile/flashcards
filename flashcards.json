@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "category": "Software Architecture",
+    "front": "What is the Single Responsibility Principle (SRP)?",
+    "back": "A class or module should have one, and only one, reason to change—meaning it should encapsulate a single well-defined responsibility.",
+    "hint": "The 'S' in SOLID design principles."
+  },
+  {
+    "id": 2,
+    "category": "Web & HTTP",
+    "front": "What is the difference between HTTP PUT and PATCH?",
+    "back": "PUT replaces the entire target resource with the request payload (idempotent), whereas PATCH applies a partial modification to the resource.",
+    "hint": "Full replacement vs. partial update."
+  },
+  {
+    "id": 3,
+    "category": "Version Control",
+    "front": "How does `git rebase` differ from `git merge`?",
+    "back": "`git merge` joins two branch histories with a new merge commit, preserving branch structure. `git rebase` replays commits from one branch onto another, creating a linear history.",
+    "hint": "Merge commit vs. linear commit history."
+  },
+  {
+    "id": 4,
+    "category": "Software Testing",
+    "front": "What is the Testing Pyramid?",
+    "back": "A strategy recommending many fast, isolated unit tests at the base, fewer integration tests in the middle, and a small number of end-to-end UI tests at the top.",
+    "hint": "Balances speed, cost, and confidence."
+  },
+  {
+    "id": 5,
+    "category": "Databases",
+    "front": "What do the ACID properties stand for in database transactions?",
+    "back": "Atomicity (all-or-nothing), Consistency (valid state transitions), Isolation (concurrent transactions don't interfere), and Durability (committed data persists).",
+    "hint": "Four guarantees of reliable relational transactions."
+  },
+  {
+    "id": 6,
+    "category": "Algorithms",
+    "front": "What is the time complexity of Binary Search, and what prerequisite does it require?",
+    "back": "O(log n) in the worst and average cases. It requires the input collection to be sorted beforehand.",
+    "hint": "Halves the search space on each comparison."
+  },
+  {
+    "id": 7,
+    "category": "Web Security",
+    "front": "What is Cross-Site Scripting (XSS) and how is it prevented?",
+    "back": "XSS injects malicious scripts into trusted web pages viewed by other users. Prevent it by escaping/sanitizing untrusted output, avoiding raw HTML injection, and using a strict Content Security Policy (CSP).",
+    "hint": "Never trust unescaped user input in the DOM."
+  },
+  {
+    "id": 8,
+    "category": "Agile & MDS",
+    "front": "What is the purpose of a Sprint Retrospective in Scrum?",
+    "back": "The team reflects on how the last sprint went regarding people, processes, and tools, and agrees on concrete improvements to apply in the next sprint.",
+    "hint": "Focuses on process improvement, not the product demo."
+  },
+  {
+    "id": 9,
+    "category": "Frontend Engineering",
+    "front": "What is Event Delegation in JavaScript?",
+    "back": "Attaching a single event listener to a common ancestor element instead of multiple child elements, relying on event bubbling to inspect `event.target`.",
+    "hint": "Saves memory and automatically supports dynamically added elements."
+  },
+  {
+    "id": 10,
+    "category": "APIs & Networking",
+    "front": "What makes an HTTP request idempotent?",
+    "back": "Making the same request multiple times produces the same server state as making it once. GET, PUT, and DELETE are idempotent; POST is generally not.",
+    "hint": "Safe to retry without creating duplicate side effects."
+  }
+]
