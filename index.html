@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Flashcards — Flashcards de Estudo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="14" rx="3" />
+            <path d="M6 20h12" />
+            <path d="M8 10h8" />
+            <path d="M8 14h5" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">Study Flashcards</h1>
+          <p class="brand-subtitle">Flashcards de Estudo</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="shuffleBtn" class="btn btn-ghost" type="button" title="Shuffle deck (S)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="16 3 21 3 21 8" />
+            <line x1="4" y1="20" x2="21" y2="3" />
+            <polyline points="21 16 21 21 16 21" />
+            <line x1="15" y1="15" x2="21" y2="21" />
+            <line x1="4" y1="4" x2="9" y2="9" />
+          </svg>
+          <span>Shuffle</span>
+        </button>
+
+        <button id="headerRestartBtn" class="btn btn-ghost" type="button" title="Restart session (R)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+            <path d="M3 3v5h5" />
+          </svg>
+          <span>Restart</span>
+        </button>
+
+        <button id="themeToggleBtn" class="btn btn-icon" type="button" aria-label="Toggle dark mode" title="Toggle theme">
+          <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2" />
+            <path d="M12 20v2" />
+            <path d="m4.93 4.93 1.41 1.41" />
+            <path d="m17.66 17.66 1.41 1.41" />
+            <path d="M2 12h2" />
+            <path d="M20 12h2" />
+            <path d="m6.34 17.66-1.41 1.41" />
+            <path d="m19.07 4.93-1.41 1.41" />
+          </svg>
+          <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Study View -->
+      <section id="studyView" class="study-view" aria-label="Flashcard study session">
+        <!-- Progress Panel -->
+        <div class="progress-panel">
+          <div class="progress-meta">
+            <div class="progress-text">
+              <span id="cardCounter" class="counter-primary">Card 1 of 10</span>
+              <span id="deckModeBadge" class="mode-badge" hidden>Review Mode</span>
+            </div>
+            <div class="live-stats" aria-label="Current session stats">
+              <span class="stat-pill stat-pill-known">
+                <span class="dot dot-known"></span>
+                <span>Known: <strong id="liveKnownCount">0</strong></span>
+              </span>
+              <span class="stat-pill stat-pill-review">
+                <span class="dot dot-review"></span>
+                <span>To Review: <strong id="liveReviewCount">0</strong></span>
+              </span>
+            </div>
+          </div>
+          <div
+            class="progress-track"
+            role="progressbar"
+            aria-label="Deck progress"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+            id="progressTrack"
+          >
+            <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- 3D Flashcard Stage -->
+        <div class="card-stage">
+          <div
+            id="flashcard"
+            class="flashcard"
+            role="button"
+            tabindex="0"
+            aria-pressed="false"
+            aria-label="Flashcard. Click or press Space to flip."
+          >
+            <!-- Front Face -->
+            <div class="card-face card-face-front">
+              <div class="card-top-bar">
+                <span id="frontCategory" class="category-chip">Category</span>
+                <div class="card-badges">
+                  <span id="frontStatusBadge" class="status-badge" hidden></span>
+                  <span class="side-label">Front</span>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <p id="frontText" class="card-question">Loading flashcards…</p>
+              </div>
+
+              <div class="card-footer">
+                <span class="flip-cue">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                    <path d="M3 3v5h5" />
+                    <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+                    <path d="M16 16h5v5" />
+                  </svg>
+                  Click card to reveal answer
+                </span>
+                <kbd class="kbd">Space</kbd>
+              </div>
+            </div>
+
+            <!-- Back Face -->
+            <div class="card-face card-face-back">
+              <div class="card-top-bar">
+                <span id="backCategory" class="category-chip category-chip-back">Category</span>
+                <div class="card-badges">
+                  <span id="backStatusBadge" class="status-badge" hidden></span>
+                  <span class="side-label side-label-back">Answer</span>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <p id="backText" class="card-answer"></p>
+                <p id="hintText" class="card-hint" hidden></p>
+              </div>
+
+              <div class="card-footer">
+                <span class="flip-cue">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                    <path d="M3 3v5h5" />
+                    <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+                    <path d="M16 16h5v5" />
+                  </svg>
+                  Click card to see question
+                </span>
+                <kbd class="kbd">Space</kbd>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rating & Navigation Controls -->
+        <div class="controls-panel">
+          <div class="rating-actions">
+            <button id="markReviewBtn" class="btn btn-review" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+              </svg>
+              <span>To Review</span>
+              <kbd class="kbd kbd-on-btn">1</kbd>
+            </button>
+
+            <button id="markKnownBtn" class="btn btn-known" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              <span>Known</span>
+              <kbd class="kbd kbd-on-btn">2</kbd>
+            </button>
+          </div>
+
+          <div class="secondary-nav">
+            <button id="prevBtn" class="btn btn-subtle" type="button" disabled>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+              <span>Previous</span>
+            </button>
+
+            <button id="flipBtn" class="btn btn-subtle" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+                <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+                <path d="M16 16h5v5" />
+              </svg>
+              <span>Flip Card</span>
+            </button>
+
+            <button id="nextBtn" class="btn btn-subtle" type="button">
+              <span>Skip</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- End-of-Session Summary View -->
+      <section id="summaryView" class="summary-view" aria-label="Session summary" hidden>
+        <div class="summary-card">
+          <div class="summary-header">
+            <span class="summary-eyebrow">Session Complete</span>
+            <h2 id="summaryHeadline" class="summary-title">Great study session!</h2>
+            <p id="summarySubtext" class="summary-subtitle">
+              Here is how you did across this deck.
+            </p>
+          </div>
+
+          <div class="summary-visual">
+            <div class="ring-wrapper" aria-hidden="true">
+              <svg class="progress-ring" width="148" height="148" viewBox="0 0 148 148">
+                <circle class="ring-bg" cx="74" cy="74" r="60" />
+                <circle id="ringProgress" class="ring-fg" cx="74" cy="74" r="60" />
+              </svg>
+              <div class="ring-center">
+                <span id="summaryPercent" class="ring-percent">0%</span>
+                <span class="ring-label">Known</span>
+              </div>
+            </div>
+
+            <div class="summary-stats">
+              <div class="summary-stat-box stat-box-known">
+                <span class="stat-box-label">Known</span>
+                <strong id="summaryKnownCount" class="stat-box-value">0</strong>
+              </div>
+              <div class="summary-stat-box stat-box-review">
+                <span class="stat-box-label">To Review</span>
+                <strong id="summaryReviewCount" class="stat-box-value">0</strong>
+              </div>
+              <div class="summary-stat-box stat-box-total">
+                <span class="stat-box-label">Total Cards</span>
+                <strong id="summaryTotalCount" class="stat-box-value">0</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-actions">
+            <button id="restartBtn" class="btn btn-primary" type="button">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+              </svg>
+              <span>Restart Full Deck</span>
+            </button>
+
+            <button id="reviewOnlyBtn" class="btn btn-review-outline" type="button" hidden>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+              </svg>
+              <span>Practice "To Review" (<span id="reviewOnlyCount">0</span>)</span>
+            </button>
+
+            <button id="shuffleRestartBtn" class="btn btn-ghost-bordered" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="16 3 21 3 21 8" />
+                <line x1="4" y1="20" x2="21" y2="3" />
+                <polyline points="21 16 21 21 16 21" />
+                <line x1="15" y1="15" x2="21" y2="21" />
+                <line x1="4" y1="4" x2="9" y2="9" />
+              </svg>
+              <span>Shuffle &amp; Restart</span>
+            </button>
+          </div>
+
+          <div class="summary-breakdown">
+            <h3 class="breakdown-title">Deck Breakdown</h3>
+            <ul id="breakdownList" class="breakdown-list"></ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Keyboard Shortcuts Footer -->
+    <footer class="app-footer">
+      <p class="shortcuts-hint">
+        Shortcuts: <kbd class="kbd">Space</kbd> Flip &middot;
+        <kbd class="kbd">1</kbd> To Review &middot;
+        <kbd class="kbd">2</kbd> Known &middot;
+        <kbd class="kbd">S</kbd> Shuffle &middot;
+        <kbd class="kbd">R</kbd> Restart
+      </p>
+    </footer>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
